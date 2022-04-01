@@ -50,6 +50,7 @@ import static com.dieam.reactnativepushnotification.modules.RNPushNotificationAt
 import static com.dieam.reactnativepushnotification.modules.RNPushNotification.KEY_TEXT_REPLY;
 
 public class RNPushNotificationHelper {
+    public static String targetActivityClassName = null;
     public static final String PREFERENCES_KEY = "rn_push_notification";
     private static final long DEFAULT_VIBRATION = 300L;
 
@@ -66,7 +67,10 @@ public class RNPushNotificationHelper {
     public Class getMainActivityClass() {
         String packageName = context.getPackageName();
         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-        String className = launchIntent.getComponent().getClassName();
+        String className = RNPushNotificationHelper.targetActivityClassName != null
+                ? RNPushNotificationHelper.targetActivityClassName
+                : launchIntent.getComponent().getClassName();
+
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
